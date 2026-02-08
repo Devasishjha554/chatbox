@@ -1,19 +1,15 @@
 <!DOCTYPE html>
-
-<html class="dark" lang="en"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>AI Therapist Chat</title>
-<!-- Fonts -->
-<link href="https://fonts.googleapis.com" rel="preconnect"/>
-<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<!-- Tailwind CSS -->
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<!-- Theme Config -->
-<script id="tailwind-config">
+<html class="dark" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>AI Therapist Chat</title>
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
         tailwind.config = {
             darkMode: "class",
             theme: {
@@ -33,212 +29,236 @@
             },
         }
     </script>
-<style>
-        /* Custom scrollbar for webkit browsers */
-        ::-webkit-scrollbar {
-            width: 8px;
+    <style>
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #233648; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #344a5e; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .mask-gradient { mask-image: linear-gradient(to right, black 80%, transparent 100%); }
+        
+        /* Smooth message entry animation */
+        @keyframes messageIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-        ::-webkit-scrollbar-track {
-            background: transparent; 
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #233648; 
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #344a5e; 
-        }
+        .animate-message { animation: messageIn 0.3s ease-out forwards; }
     </style>
 </head>
 <body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white font-display overflow-hidden h-screen flex">
-<!-- Sidebar -->
+
 <aside class="hidden md:flex flex-col w-72 h-full bg-surface-dark border-r border-surface-hover flex-shrink-0">
-<div class="p-6 flex flex-col h-full justify-between">
-<div class="flex flex-col gap-8">
-<!-- User Profile Summary -->
-<div class="flex gap-3 items-center">
-<div class="bg-center bg-no-repeat bg-cover rounded-full h-12 w-12 border-2 border-surface-hover relative" data-alt="User profile picture showing a calm abstract avatar" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDrSge5FAgkvVzE0auq2_WIj-wUx7d_Tv6-_f91tuiyIjT59VrKk_euTSkO67C6KPBCVS_AikditS7mXWG32a-L4RTy1npRBd4VE6Mbc8zuxUvRqFUrlTmTbuP9BGolASKez33EL6vVBQEP0YT7f400dHSGOGl0GyeCP3ohL14G7uX8qx-VDenzBbs5o3yqOislySEKiVX_TzyiJsk4VUWUVbfSdGDjZx7_g7lJe5w1JL4K1SDLGElmy2i7yvVes7fV1wrb8cci7Vg");'>
-<div class="absolute bottom-0 right-0 h-3 w-3 bg-green-500 rounded-full border-2 border-surface-dark"></div>
-</div>
-<div class="flex flex-col">
-<h1 class="text-white text-base font-semibold leading-tight">Alex Morgan</h1>
-<p class="text-slate-400 text-xs font-normal">Wellness Plan: Active</p>
-</div>
-</div>
-<!-- Navigation -->
-<nav class="flex flex-col gap-2">
-<a class="flex items-center gap-3 px-4 py-3 rounded-xl bg-primary/10 border border-primary/20 transition-colors" href="#">
-<span class="material-symbols-outlined text-primary">chat</span>
-<p class="text-white text-sm font-medium">Current Session</p>
-</a>
-<a class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-surface-hover transition-colors text-slate-400 hover:text-white group" href="#">
-<span class="material-symbols-outlined group-hover:text-white">pie_chart</span>
-<p class="text-sm font-medium">Mood Tracker</p>
-</a>
-<a class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-surface-hover transition-colors text-slate-400 hover:text-white group" href="#">
-<span class="material-symbols-outlined group-hover:text-white">book</span>
-<p class="text-sm font-medium">Journal</p>
-</a>
-<a class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-surface-hover transition-colors text-slate-400 hover:text-white group" href="#">
-<span class="material-symbols-outlined group-hover:text-white">favorite</span>
-<p class="text-sm font-medium">Saved Insights</p>
-</a>
-</nav>
-</div>
-<!-- Bottom Settings -->
-<div class="flex flex-col gap-2">
-<a class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-surface-hover transition-colors text-slate-400 hover:text-white group" href="#">
-<span class="material-symbols-outlined group-hover:text-white">settings</span>
-<p class="text-sm font-medium">Settings</p>
-</a>
-</div>
-</div>
-</aside>
-<!-- Main Chat Area -->
-<main class="flex flex-col flex-1 h-full min-w-0 bg-background-dark relative">
-<!-- Top Header -->
-<header class="flex items-center justify-between px-6 py-4 border-b border-surface-hover bg-background-dark/80 backdrop-blur-md z-10 sticky top-0">
-<div class="flex items-center gap-4 text-white">
-<div class="h-10 w-10 rounded-full bg-primary/20 flex items-center justify-center text-primary">
-<span class="material-symbols-outlined" style="font-size: 24px;">psychology</span>
-</div>
-<div>
-<h2 class="text-white text-lg font-bold leading-tight flex items-center gap-2">
-                        Dr. Aria
-                        <span class="px-2 py-0.5 rounded-full bg-green-500/20 text-green-400 text-[10px] font-bold uppercase tracking-wider border border-green-500/20">Online</span>
-</h2>
-<p class="text-slate-400 text-xs font-medium">AI Clinical Therapist • Encrypted</p>
-</div>
-</div>
-<div class="flex gap-3">
-<div class="hidden sm:flex items-center px-3 py-1.5 rounded-lg bg-surface-hover text-slate-400 text-xs font-medium border border-white/5">
-<span class="material-symbols-outlined text-[16px] mr-1.5">lock</span>
-                    Private Session
+    <div class="p-6 flex flex-col h-full justify-between">
+        <div class="flex flex-col gap-8">
+            <div class="flex gap-3 items-center">
+                <div class="bg-center bg-no-repeat bg-cover rounded-full h-12 w-12 border-2 border-surface-hover relative" style='background-image: url("https://api.dicebear.com/7.x/avataaars/svg?seed=Alex");'>
+                    <div class="absolute bottom-0 right-0 h-3 w-3 bg-green-500 rounded-full border-2 border-surface-dark"></div>
                 </div>
-<button class="flex items-center justify-center rounded-xl h-10 px-4 bg-surface-hover hover:bg-red-500/20 hover:text-red-400 hover:border-red-500/30 border border-transparent text-slate-300 text-sm font-bold transition-all">
-                    End Session
-                </button>
-</div>
-</header>
-<!-- Messages Scroll Area -->
-<div class="flex-1 overflow-y-auto p-4 sm:p-6 md:p-10 flex flex-col gap-6">
-<!-- Date Separator -->
-<div class="flex justify-center py-4">
-<span class="px-3 py-1 bg-surface-hover rounded-full text-xs text-slate-400 font-medium">Today, 2:30 PM</span>
-</div>
-<!-- AI Message 1 -->
-<div class="flex items-end gap-3 max-w-3xl">
-<div class="bg-center bg-no-repeat bg-cover rounded-full h-10 w-10 shrink-0 border border-surface-hover shadow-sm" data-alt="Dr. Aria AI avatar, calm blue tones" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAhETJifbBEFTBzcM9unvfwp4clKoqnYquKdtSdgqax-3SrfU2K6gIk5UnI2XjRWdxOlK3kvAcYL5qDpQqhZQTtR2PG9316ZftfVPb6PnGr4rpz1M6gw8csm6IWqmgxKchAnwb8ZtzIYWXfwIJqsIM6HLdpSJE8eh9BRgV3vq16RC-0ex30ravS-g9O_oLTSkC3F1qu9tqwe2_EC4oNWcQxdZCZ3Pu3uQ94oyH6oL4F16d2dhnIxG8YuPEzDoKjA-ojJZHhPcZtA5o");'></div>
-<div class="flex flex-col gap-1 items-start">
-<p class="text-slate-400 text-xs font-medium ml-1">Dr. Aria</p>
-<div class="p-4 rounded-2xl rounded-tl-none bg-surface-hover text-slate-100 text-base font-normal leading-relaxed shadow-sm border border-white/5">
-                        Hello Alex. I'm here to listen without judgment. I noticed our last session was a bit intense. How are you feeling right now?
-                    </div>
-</div>
-</div>
-<!-- User Message 1 -->
-<div class="flex items-end gap-3 max-w-3xl self-end flex-row-reverse">
-<div class="bg-center bg-no-repeat bg-cover rounded-full h-10 w-10 shrink-0 border border-primary/30 shadow-sm" data-alt="User profile picture" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBsY1liFPgqWbYpU9WJUxwoAuduqlrznZw8VVX6aAbJAvow-ynLZRiENQMv9t3aS3twU4eX6iw4XE-p8sumWrkcfzOR3-o8R6pRuPCr-d3Vg2GU2w0NXXBor-bA95Prk3Me78UHXqH_lgd5WOisMyevuCGPg9TGhBcJ--P4MVhQ9NUXviisVdBI3J-UM3WidBVvKqUAATS9RczhtSmeuzoPe1UNfj-ySwB2ZvRHt5esK7Smk3U5n4SP7Ou5lWGkFKx-J80d75Lix5U");'></div>
-<div class="flex flex-col gap-1 items-end">
-<p class="text-slate-400 text-xs font-medium mr-1">You</p>
-<div class="p-4 rounded-2xl rounded-tr-none bg-primary text-white text-base font-normal leading-relaxed shadow-md">
-                        Hi Dr. Aria. Honestly, I'm feeling a bit overwhelmed today. Work has been piling up.
-                    </div>
-</div>
-</div>
-<!-- AI Message 2 -->
-<div class="flex items-end gap-3 max-w-3xl">
-<div class="bg-center bg-no-repeat bg-cover rounded-full h-10 w-10 shrink-0 border border-surface-hover shadow-sm" data-alt="Dr. Aria AI avatar, calm blue tones" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAj4XT-ItCwl9xnupctjLjtDaRLM4_9IPi3YdJ-az9kX6UrQqv9b_TbpNXcy_lAVxFdAgT_2vxl45noYd3qJFVBP29XPw0gqDpHSuStWvhRpKEleJk3zS3jF6W4ITOSWWhPwQrBJLtSfCtz7tb6tXC92x307PFSSuGED0FS0yADP7pfhyvIjxI2ZMaDbPaWKD5IyE-_uCgIB3mgndq9xrMiwlBDZ4c4bW5ZRTZXud2VEyp9nkC2RhvkJHnECF2z5KSLOwBbPZxkB2E");'></div>
-<div class="flex flex-col gap-1 items-start">
-<p class="text-slate-400 text-xs font-medium ml-1">Dr. Aria</p>
-<div class="p-4 rounded-2xl rounded-tl-none bg-surface-hover text-slate-100 text-base font-normal leading-relaxed shadow-sm border border-white/5">
-                        I hear you. That sense of overwhelm is completely valid given what you've shared before. Is there a specific task that's weighing on you, or is it just the general volume of work?
-                    </div>
-</div>
-</div>
-<!-- Spacer for bottom content -->
-<div class="h-4"></div>
-</div>
-<!-- Bottom Composer Area -->
-<div class="p-4 sm:p-6 pt-2 bg-gradient-to-t from-background-dark via-background-dark to-transparent z-20">
-<!-- Quick Emotion Chips -->
-<div class="flex gap-3 pb-4 overflow-x-auto no-scrollbar mask-gradient">
-<button class="flex items-center gap-2 px-3 py-2 rounded-xl bg-surface-hover border border-white/5 hover:bg-surface-hover/80 hover:border-primary/50 transition-all group shrink-0">
-<span class="material-symbols-outlined text-indigo-400 group-hover:text-indigo-300 text-xl">cloud</span>
-<span class="text-sm text-slate-300 group-hover:text-white font-medium">Feeling anxious</span>
-</button>
-<button class="flex items-center gap-2 px-3 py-2 rounded-xl bg-surface-hover border border-white/5 hover:bg-surface-hover/80 hover:border-primary/50 transition-all group shrink-0">
-<span class="material-symbols-outlined text-amber-400 group-hover:text-amber-300 text-xl">bedtime</span>
-<span class="text-sm text-slate-300 group-hover:text-white font-medium">Bad sleep</span>
-</button>
-<button class="flex items-center gap-2 px-3 py-2 rounded-xl bg-surface-hover border border-white/5 hover:bg-surface-hover/80 hover:border-primary/50 transition-all group shrink-0">
-<span class="material-symbols-outlined text-emerald-400 group-hover:text-emerald-300 text-xl">emoji_events</span>
-<span class="text-sm text-slate-300 group-hover:text-white font-medium">Celebrate a win</span>
-</button>
-<button class="flex items-center gap-2 px-3 py-2 rounded-xl bg-surface-hover border border-white/5 hover:bg-surface-hover/80 hover:border-primary/50 transition-all group shrink-0">
-<span class="material-symbols-outlined text-rose-400 group-hover:text-rose-300 text-xl">waves</span>
-<span class="text-sm text-slate-300 group-hover:text-white font-medium">Overwhelmed</span>
-</button>
-</div>
-<!-- Input Box -->
-<div class="relative w-full max-w-4xl mx-auto">
-<div class="flex items-end w-full bg-surface-hover rounded-2xl border border-white/5 focus-within:border-primary/50 focus-within:ring-1 focus-within:ring-primary/50 transition-all shadow-lg">
-<textarea class="w-full bg-transparent border-0 text-white placeholder-slate-400 focus:ring-0 resize-none py-4 pl-5 pr-14 h-16 max-h-32" placeholder="Type whatever is on your mind..."></textarea>
-<div class="flex items-center gap-2 p-2 pr-3">
-<button class="p-2 text-slate-400 hover:text-white hover:bg-white/5 rounded-full transition-colors">
-<span class="material-symbols-outlined">mic</span>
-</button>
-<button class="p-2 text-slate-400 hover:text-white hover:bg-white/5 rounded-full transition-colors">
-<span class="material-symbols-outlined">sentiment_satisfied</span>
-</button>
-<button class="h-10 px-6 bg-primary hover:bg-blue-600 text-white text-sm font-semibold rounded-xl transition-colors shadow-lg shadow-primary/20">
-                            Send
-                        </button>
-</div>
-</div>
-<p class="text-center text-slate-500 text-[11px] mt-3">Dr. Aria is an AI assistant and can make mistakes. Always consult a professional for urgent needs.</p>
-</div>
-</div>
-</main>
-<!-- Right Context Panel (Desktop Only) -->
-<aside class="hidden lg:flex flex-col w-80 bg-background-dark border-l border-surface-hover p-6 gap-6">
-<!-- Mood Analysis Widget -->
-<div class="flex flex-col gap-4">
-<h3 class="text-slate-400 text-xs font-bold uppercase tracking-wider">Session Analysis</h3>
-<div class="p-4 rounded-xl bg-surface-hover border border-white/5 flex flex-col gap-3">
-<div class="flex justify-between items-center">
-<span class="text-sm font-medium text-slate-200">Current Mood</span>
-<span class="text-xs font-semibold text-orange-400 bg-orange-400/10 px-2 py-1 rounded">Stressed</span>
-</div>
-<div class="w-full bg-surface-dark rounded-full h-2">
-<div class="bg-gradient-to-r from-green-400 via-yellow-400 to-orange-400 h-2 rounded-full w-[75%]" style="box-shadow: 0 0 10px rgba(251, 146, 60, 0.3);"></div>
-</div>
-<p class="text-xs text-slate-400 leading-relaxed">
-                    You seem to be experiencing high stress levels related to work-life balance.
-                </p>
-</div>
-</div>
-<!-- Quick Tools -->
-<div class="flex flex-col gap-4">
-<h3 class="text-slate-400 text-xs font-bold uppercase tracking-wider">Recommended Tools</h3>
-<div class="grid grid-cols-2 gap-3">
-<button class="flex flex-col items-center justify-center p-4 rounded-xl bg-surface-hover border border-white/5 hover:border-primary/30 hover:bg-surface-hover/80 transition-all gap-2 group">
-<span class="material-symbols-outlined text-sky-400 text-2xl group-hover:scale-110 transition-transform">air</span>
-<span class="text-xs font-medium text-slate-300">Breathing</span>
-</button>
-<button class="flex flex-col items-center justify-center p-4 rounded-xl bg-surface-hover border border-white/5 hover:border-primary/30 hover:bg-surface-hover/80 transition-all gap-2 group">
-<span class="material-symbols-outlined text-purple-400 text-2xl group-hover:scale-110 transition-transform">self_improvement</span>
-<span class="text-xs font-medium text-slate-300">Meditation</span>
-</button>
-</div>
-</div>
-<!-- Inspiration Card -->
-<div class="mt-auto p-5 rounded-2xl bg-gradient-to-br from-primary/20 to-surface-hover border border-primary/10 relative overflow-hidden">
-<div class="absolute top-0 right-0 p-3 opacity-10">
-<span class="material-symbols-outlined text-6xl">format_quote</span>
-</div>
-<p class="text-sm text-white font-medium italic relative z-10">"You don't have to see the whole staircase, just take the first step."</p>
-<p class="text-xs text-slate-400 mt-2 relative z-10">— Martin Luther King Jr.</p>
-</div>
+                <div class="flex flex-col">
+                    <h1 class="text-white text-base font-semibold leading-tight">Alex Morgan</h1>
+                    <p class="text-slate-400 text-xs font-normal">Wellness Plan: Active</p>
+                </div>
+            </div>
+            <nav class="flex flex-col gap-2">
+                <a class="flex items-center gap-3 px-4 py-3 rounded-xl bg-primary/10 border border-primary/20 transition-colors" href="#"><span class="material-symbols-outlined text-primary">chat</span><p class="text-white text-sm font-medium">Current Session</p></a>
+                <a class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-surface-hover transition-colors text-slate-400 hover:text-white group" href="#"><span class="material-symbols-outlined group-hover:text-white">pie_chart</span><p class="text-sm font-medium">Mood Tracker</p></a>
+                <a class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-surface-hover transition-colors text-slate-400 hover:text-white group" href="#"><span class="material-symbols-outlined group-hover:text-white">book</span><p class="text-sm font-medium">Journal</p></a>
+            </nav>
+        </div>
+        <div class="flex flex-col gap-2">
+            <a class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-surface-hover transition-colors text-slate-400 hover:text-white group" href="#"><span class="material-symbols-outlined group-hover:text-white">settings</span><p class="text-sm font-medium">Settings</p></a>
+        </div>
+    </div>
 </aside>
-</body></html>
+
+<main class="flex flex-col flex-1 h-full min-w-0 bg-background-dark relative">
+    <header class="flex items-center justify-between px-6 py-4 border-b border-surface-hover bg-background-dark/80 backdrop-blur-md z-10 sticky top-0">
+        <div class="flex items-center gap-4 text-white">
+            <div class="h-10 w-10 rounded-full bg-primary/20 flex items-center justify-center text-primary">
+                <span class="material-symbols-outlined" style="font-size: 24px;">psychology</span>
+            </div>
+            <div>
+                <h2 class="text-white text-lg font-bold leading-tight flex items-center gap-2">Dr. Aria <span class="px-2 py-0.5 rounded-full bg-green-500/20 text-green-400 text-[10px] font-bold uppercase tracking-wider border border-green-500/20">Online</span></h2>
+                <p class="text-slate-400 text-xs font-medium">AI Clinical Therapist • Encrypted</p>
+            </div>
+        </div>
+        <button class="flex items-center justify-center rounded-xl h-10 px-4 bg-surface-hover hover:bg-red-500/20 hover:text-red-400 hover:border-red-500/30 border border-transparent text-slate-300 text-sm font-bold transition-all">End Session</button>
+    </header>
+
+    <div id="chatMessages" class="flex-1 overflow-y-auto p-4 sm:p-6 md:p-10 flex flex-col gap-6">
+        <div class="flex justify-center py-4">
+            <span class="px-3 py-1 bg-surface-hover rounded-full text-xs text-slate-400 font-medium">Today, 2:30 PM</span>
+        </div>
+        
+        <div class="flex items-end gap-3 max-w-3xl">
+            <div class="h-10 w-10 rounded-full bg-surface-hover flex items-center justify-center border border-white/10 shadow-sm">
+                 <span class="material-symbols-outlined text-primary" style="font-size: 20px;">psychology</span>
+            </div>
+            <div class="flex flex-col gap-1 items-start">
+                <p class="text-slate-400 text-xs font-medium ml-1">Dr. Aria</p>
+                <div class="p-4 rounded-2xl rounded-tl-none bg-surface-hover text-slate-100 text-base border border-white/5">
+                    Hello Alex. I'm here to listen. How are you feeling right now?
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="p-4 sm:p-6 pt-2 bg-gradient-to-t from-background-dark via-background-dark to-transparent z-20">
+        <div class="flex gap-3 pb-4 overflow-x-auto no-scrollbar mask-gradient">
+            <button class="chip flex items-center gap-2 px-3 py-2 rounded-xl bg-surface-hover border border-white/5 hover:border-primary/50 transition-all shrink-0">
+                <span class="material-symbols-outlined text-indigo-400 text-xl">cloud</span>
+                <span class="text-sm text-slate-300 font-medium">I'm feeling anxious</span>
+            </button>
+            <button class="chip flex items-center gap-2 px-3 py-2 rounded-xl bg-surface-hover border border-white/5 hover:border-primary/50 transition-all shrink-0">
+                <span class="material-symbols-outlined text-amber-400 text-xl">bedtime</span>
+                <span class="text-sm text-slate-300 font-medium">I had bad sleep</span>
+            </button>
+            <button class="chip flex items-center gap-2 px-3 py-2 rounded-xl bg-surface-hover border border-white/5 hover:border-primary/50 transition-all shrink-0">
+                <span class="material-symbols-outlined text-rose-400 text-xl">waves</span>
+                <span class="text-sm text-slate-300 font-medium">Feeling overwhelmed</span>
+            </button>
+        </div>
+
+        <div class="relative w-full max-w-4xl mx-auto">
+            <div class="flex items-end w-full bg-surface-hover rounded-2xl border border-white/5 focus-within:border-primary/50 focus-within:ring-1 focus-within:ring-primary/50 transition-all shadow-lg">
+                <textarea id="chatInput" class="w-full bg-transparent border-0 text-white placeholder-slate-400 focus:ring-0 resize-none py-4 pl-5 pr-14 h-16 max-h-32" placeholder="Type whatever is on your mind..."></textarea>
+                <div class="flex items-center gap-2 p-2 pr-3">
+                    <button id="sendBtn" class="h-10 px-6 bg-primary hover:bg-blue-600 text-white text-sm font-semibold rounded-xl transition-colors shadow-lg shadow-primary/20">Send</button>
+                </div>
+            </div>
+            <p class="text-center text-slate-500 text-[11px] mt-3">Dr. Aria is an AI assistant and can make mistakes. Always consult a professional for urgent needs.</p>
+        </div>
+    </div>
+</main>
+
+<script>
+const input = document.getElementById("chatInput");
+const sendBtn = document.getElementById("sendBtn");
+const messages = document.getElementById("chatMessages");
+
+// --- MEANINGFUL RESPONSE LOGIC ---
+const getAriaResponse = (userText) => {
+    const text = userText.toLowerCase();
+    
+    if (text.includes("anxious") || text.includes("anxiety")) {
+        return "Anxiety can feel like an uninvited guest. When you feel it rising, where do you notice it most in your body—your chest, your stomach, or perhaps your shoulders?";
+    }
+    if (text.includes("overwhelmed") || text.includes("piling up") || text.includes("work")) {
+        return "It sounds like you're carrying a lot right now. When the 'to-do' list gets this loud, it's hard to hear anything else. If we were to pick just one small thing to set aside for today, what would it be?";
+    }
+    if (text.includes("sleep") || text.includes("tired")) {
+        return "Sleep is often the first thing to suffer when our minds are busy. Have you found it hard to fall asleep because of racing thoughts, or is it more about staying asleep?";
+    }
+    if (text.includes("thank") || text.includes("thanks")) {
+        return "You're very welcome. I'm glad we can explore these things together. Is there anything else on your mind?";
+    }
+    
+    return "I hear you, Alex. That sounds like a significant thing to navigate. Could you tell me more about how that has been affecting your energy levels lately?";
+};
+
+// --- CORE FUNCTIONS ---
+function scrollBottom() {
+    messages.scrollTo({ top: messages.scrollHeight, behavior: 'smooth' });
+}
+
+function showTypingIndicator() {
+    const div = document.createElement("div");
+    div.id = "typing-indicator";
+    div.className = "flex items-end gap-3 max-w-3xl animate-message";
+    div.innerHTML = `
+        <div class="h-10 w-10 rounded-full bg-surface-hover flex items-center justify-center border border-white/10 shadow-sm">
+             <span class="material-symbols-outlined text-primary animate-pulse" style="font-size: 20px;">psychology</span>
+        </div>
+        <div class="p-4 rounded-2xl rounded-tl-none bg-surface-hover text-slate-400 italic text-sm border border-white/5">
+            Dr. Aria is thinking...
+        </div>
+    `;
+    messages.appendChild(div);
+    scrollBottom();
+}
+
+function addUserMessage(text) {
+    const msg = document.createElement("div");
+    msg.className = "flex items-end gap-3 max-w-3xl self-end flex-row-reverse animate-message";
+    msg.innerHTML = `
+        <div class="h-10 w-10 rounded-full bg-primary flex items-center justify-center border border-primary/30 shadow-sm">
+            <span class="text-white text-xs font-bold">AM</span>
+        </div>
+        <div class="flex flex-col gap-1 items-end">
+            <p class="text-slate-400 text-xs font-medium mr-1">You</p>
+            <div class="p-4 rounded-2xl rounded-tr-none bg-primary text-white text-base shadow-md">
+                ${text}
+            </div>
+        </div>
+    `;
+    messages.appendChild(msg);
+    scrollBottom();
+}
+
+function addAIMessage(text) {
+    const msg = document.createElement("div");
+    msg.className = "flex items-end gap-3 max-w-3xl animate-message";
+    msg.innerHTML = `
+        <div class="h-10 w-10 rounded-full bg-surface-hover flex items-center justify-center border border-white/10 shadow-sm">
+             <span class="material-symbols-outlined text-primary" style="font-size: 20px;">psychology</span>
+        </div>
+        <div class="flex flex-col gap-1 items-start">
+            <p class="text-slate-400 text-xs font-medium ml-1">Dr. Aria</p>
+            <div class="p-4 rounded-2xl rounded-tl-none bg-surface-hover text-slate-100 border border-white/5 leading-relaxed">
+                ${text}
+            </div>
+        </div>
+    `;
+    messages.appendChild(msg);
+    scrollBottom();
+}
+
+async function handleSendMessage(explicitText = null) {
+    const text = explicitText || input.value.trim();
+    if (!text) return;
+
+    // User message
+    addUserMessage(text);
+    if (!explicitText) {
+        input.value = "";
+        input.style.height = "64px";
+    }
+
+    // AI thinking delay
+    showTypingIndicator();
+    
+    setTimeout(() => {
+        const indicator = document.getElementById("typing-indicator");
+        if (indicator) indicator.remove();
+        
+        const response = getAriaResponse(text);
+        addAIMessage(response);
+    }, 1500); // 1.5 second delay for realism
+}
+
+// --- EVENT LISTENERS ---
+sendBtn.addEventListener("click", () => handleSendMessage());
+
+input.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+        e.preventDefault();
+        handleSendMessage();
+    }
+});
+
+input.addEventListener("input", () => {
+    input.style.height = "auto";
+    input.style.height = input.scrollHeight + "px";
+});
+
+// Make chips clickable
+document.querySelectorAll('.chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+        const text = chip.querySelector('span:last-child').innerText;
+        handleSendMessage(text);
+    });
+});
+</script>
+
+</body>
+</html>
